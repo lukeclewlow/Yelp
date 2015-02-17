@@ -35,6 +35,18 @@ feature 'restaurants' do
 			expect(current_path).to eq '/restaurants'
 		end
 
+		context 'an invalid restaurant' do
+			scenario 'does not let you submit a name that is empty' do
+				visit '/restaurants'
+				click_link 'Add a restaurant'
+				fill_in 'Name', with: 'k'
+				click_button 'Create Restaurant'
+				expect(page).not_to have_css 'h2', text: 'k'
+				expect(page).to have_content 'error'
+			end
+		end
+
+
 	end
 
 	context 'viewing restaurants' do
@@ -75,7 +87,7 @@ feature 'restaurants' do
 		end
 
 	end
-	
+
 end
 
 
