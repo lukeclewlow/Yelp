@@ -36,7 +36,8 @@ feature 'restaurants' do
 		end
 
 		context 'an invalid restaurant' do
-			scenario 'does not let you submit a name that is empty' do
+		
+			scenario 'does not let you submit a name that is 1 character' do
 				visit '/restaurants'
 				click_link 'Add a restaurant'
 				fill_in 'Name', with: 'k'
@@ -44,6 +45,13 @@ feature 'restaurants' do
 				expect(page).not_to have_css 'h2', text: 'k'
 				expect(page).to have_content 'error'
 			end
+
+			scenario 'it is not valid unless it has unique name' do
+				Restaurant.create(name: "Moe's Tavern")
+				restaurant = Restaurant.new(name: "Moe's Tavern")
+				expect(restaurant).to have(1).error_on(:name)
+			end
+
 		end
 
 
