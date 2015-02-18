@@ -1,11 +1,20 @@
 require 'rails_helper'
 
+def sign_up
+	visit '/restaurants'
+	click_link('Sign up')
+  fill_in('Email', with: 'test@example.com')
+  fill_in('Password', with: 'testtest')
+  fill_in('Password confirmation', with: 'testtest')
+  click_button('Sign up')
+end
+
 feature 'restaurants' do
 
 	context 'no restaurants have been added' do	
 
 		scenario 'should display a prompt to add a restaurant' do
-			visit '/restaurants'
+			sign_up
 			expect(page).to have_content 'No restaurants'
 			expect(page).to have_link 'Add a restaurant'
 		end
@@ -27,7 +36,7 @@ feature 'restaurants' do
 	context 'creating restaurants' do
 
 		scenario 'prompts user to fill out a form, then displays the new restaurant' do
-			visit '/restaurants'
+			sign_up
 			click_link 'Add a restaurant'
 			fill_in 'Name', with: 'KFC'
 			click_button 'Create Restaurant'
@@ -35,10 +44,15 @@ feature 'restaurants' do
 			expect(current_path).to eq '/restaurants'
 		end
 
+		scenario 'A user must be logged in to create restaurants' do
+			visit '/restaurants'
+			expect(page).not_to have_content 'Add a restaurant'
+		end
+
 		context 'an invalid restaurant' do
 		
 			scenario 'does not let you submit a name that is 1 character' do
-				visit '/restaurants'
+				sign_up
 				click_link 'Add a restaurant'
 				fill_in 'Name', with: 'k'
 				click_button 'Create Restaurant'
@@ -53,7 +67,6 @@ feature 'restaurants' do
 			end
 
 		end
-
 
 	end
 
