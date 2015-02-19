@@ -18,13 +18,14 @@ feature 'reviewing' do
 
 	scenario 'deleting restaurant deletes all reviews' do
 		sign_up('user1@example.com')
-		click_link 'Review KFC'
+		create_restaurant('Subway')
+		click_link 'Review Subway'
 		fill_in "Thoughts", with: "so so"
 		select '3', from: 'Rating'
 		click_button 'Leave Review'
-		click_link 'Delete KFC'
+		click_link 'Delete Subway'
 
-		expect(page).not_to have_content 'KFC'
+		expect(page).not_to have_content 'Subway'
 		expect(page).to have_content 'No reviews.'
 	end
 
