@@ -24,10 +24,10 @@
 						<li>
 							<%= review.thoughts %>, <strong><%= review.rating %></strong>/5
 						</li>
-						<% if current_user != nil %>
-							<% if current_user.id == review.user_id %>
+						
+							<% if current_user == review.user %>
 								<%= link_to "Delete Review", restaurant_review_path(restaurant,review), method: :delete %>
-							<% end %>
+							
 						<% end %>
 					<% end %>	
 				</ul>

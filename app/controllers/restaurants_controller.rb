@@ -3,7 +3,6 @@ class RestaurantsController < ApplicationController
 	def index
 		@restaurants = Restaurant.all
 		@signed_in_user = current_user
-		@reviews = Review.all
 	end
 
 	def new
