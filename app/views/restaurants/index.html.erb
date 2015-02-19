@@ -6,9 +6,9 @@
 		
 		<% if current_user %>
 
-			
+			<% if restaurant.reviews.where("user_id = ?", current_user) == [] %>
 				<%= link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant) %>
-			
+			<% end %>
 
 			<% if current_user == restaurant.user %>
 				<%= link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant) %>
