@@ -1,20 +1,11 @@
 require 'rails_helper'
 
-def sign_up
-	visit '/restaurants'
-	click_link('Sign up')
-  fill_in('Email', with: 'test@example.com')
-  fill_in('Password', with: 'testtest')
-  fill_in('Password confirmation', with: 'testtest')
-  click_button('Sign up')
-end
-
 feature 'restaurants' do
 
 	context 'no restaurants have been added' do	
 
 		scenario 'should display a prompt to add a restaurant' do
-			sign_up
+			sign_up('user1@example.com')
 			expect(page).to have_content 'No restaurants'
 			expect(page).to have_link 'Add a restaurant'
 		end
@@ -36,7 +27,7 @@ feature 'restaurants' do
 	context 'creating restaurants' do
 
 		scenario 'prompts user to fill out a form, then displays the new restaurant' do
-			sign_up
+			sign_up('user1@example.com')
 			click_link 'Add a restaurant'
 			fill_in 'Name', with: 'KFC'
 			click_button 'Create Restaurant'
@@ -52,7 +43,7 @@ feature 'restaurants' do
 		context 'an invalid restaurant' do
 		
 			scenario 'does not let you submit a name that is 1 character' do
-				sign_up
+				sign_up('user1@example.com')
 				click_link 'Add a restaurant'
 				fill_in 'Name', with: 'k'
 				click_button 'Create Restaurant'
@@ -87,7 +78,7 @@ feature 'restaurants' do
 		before { Restaurant.create name: 'KFC' }
 
 		scenario 'let a user edit a restaurant' do
-			visit '/restaurants'
+			sign_up('user1@example.com')
 			click_link 'Edit KFC'
 			fill_in 'Name', with: 'Kentucky Fried Chicken'
 			click_button 'Update Restaurant'
@@ -98,14 +89,31 @@ feature 'restaurants' do
 
 	context 'deleting restaurants' do
 
-		before {Restaurant.create name: 'KFC'}
+		before { Restaurant.create name: 'KFC' }
 
-		scenario 'removes a restaurant when a user clicks a delete link' do
+		# scenario 'removes a restaurant when a user clicks a delete link' do
+		# 	visit '/restaurants'
+		# 	click_link 'Delete KFC'
+		# 	expect(page).not_to have_content 'KFC'
+		# 	expect(page).to have_content 'Restaurant deleted successfully'
+		# end
+
+		scenario 'a user can only edit, delete, review if they are logged in' do
 			visit '/restaurants'
-			click_link 'Delete KFC'
-			expect(page).not_to have_content 'KFC'
-			expect(page).to have_content 'Restaurant deleted successfully'
+			expect(page).not_to have_content 'Review KFC'
+			sign_up('user1@example.com')
+			expect(page).to have_content 'Review KFC'
 		end
+
+		scenario "Users can only edit/delete restaurants which they've created" do
+			sign_up('user1@example.com')
+			create_restaurant('KFC')
+			expect(page).to have_content 'Edit KFC'
+			sign_out
+			sign_up('user2@example.com')
+			expect(page).not_to have_content 'Edit KFC'
+		end
+
 
 	end
 

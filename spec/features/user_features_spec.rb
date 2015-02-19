@@ -17,12 +17,7 @@ end
 context "user signed in on the homepage" do
 
   before do
-    visit('/')
-    click_link('Sign up')
-    fill_in('Email', with: 'test@example.com')
-    fill_in('Password', with: 'testtest')
-    fill_in('Password confirmation', with: 'testtest')
-    click_button('Sign up')
+    sign_up('user1@example.com')
   end
 
   it "should see 'sign out' link" do
