@@ -46,4 +46,15 @@ feature 'reviewing' do
 		expect(page).not_to have_content 'Delete Review'
 	end
 
+	scenario 'displays an average rating for all reviews' do
+		sign_up('user1@example.com')
+		create_restaurant('BK')
+		create_review('BK','So So', '3')
+		click_link "Sign out"
+		sign_up('user2@example.com')
+		create_review('BK', 'Great', '5')
+		save_and_open_page
+		expect(page).to have_content('Average rating: 4')
+	end
+
 end
