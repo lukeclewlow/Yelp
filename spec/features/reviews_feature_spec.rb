@@ -53,7 +53,6 @@ feature 'reviewing' do
 		click_link "Sign out"
 		sign_up('user2@example.com')
 		create_review('BK', 'Great', '5')
-		save_and_open_page
 		expect(page).to have_content('Average rating: 4')
 	end
 
