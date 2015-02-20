@@ -11,7 +11,6 @@ feature 'reviewing' do
 		fill_in "Thoughts", with: "so so"
 		select '3', from: 'Rating'
 		click_button 'Leave Review'
-
 		expect(current_path).to eq '/restaurants'
 		expect(page).to have_content('so so')
 	end
@@ -53,7 +52,7 @@ feature 'reviewing' do
 		click_link "Sign out"
 		sign_up('user2@example.com')
 		create_review('BK', 'Great', '5')
-		expect(page).to have_content('Average rating: 4')
+		expect(page).to have_content('Average rating: ★★★★')
 	end
 
 end
