@@ -25,6 +25,7 @@ Run tests:
 * Ruby
 * Rails
 * RSpec
+* Capybara
 * PSQL
 * JQuery
 
